@@ -26,15 +26,24 @@ describe Oystercard do
   	end
 
   describe '#in_journey?' do
-    it 'returns true when oyster is in journey' do
-      expect(oyster.in_journey?).to eq false
-    end
+    it 'expect oyster card not to initially be in journey' do
+      expect(subject).not_to be_in_journey
+     end
   end
+
+
 
   describe '#touch_in' do
     it 'changes in_journey? to true' do
       expect{oyster.touch_in}.to change{oyster.in_journey?}.to true
     end
+  end
+
+  describe '#touch_out' do
+  	it 'changes in_journey? to false' do
+  		oyster.touch_in
+  		expect{oyster.touch_out}.to change{oyster.in_journey?}.to false
+  	end
   end
 
 
