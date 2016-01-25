@@ -19,13 +19,15 @@ describe Oystercard do
    	end
 
 
-  describe '#deduct' do
-  		it 'should deduct amount off balance passed through method' do
-  			expect{oyster.deduct(1)}.to change{oyster.balance}.by -1
-  		end
-  	end
+  #describe '#deduct' do
+
+  		#it 'should deduct amount off balance passed through method' do
+  			#expect{oyster.deduct(1)}.to change{oyster.balance}.by -1
+  		#end
+  	#end
 
   describe '#in_journey?' do
+
     it 'expect oyster card not to initially be in journey' do
       expect(subject).not_to be_in_journey
      end
@@ -34,17 +36,40 @@ describe Oystercard do
 
 
   describe '#touch_in' do
+
     it 'changes in_journey? to true' do
-      expect{oyster.touch_in}.to change{oyster.in_journey?}.to true
+    	oyster.top_up(2)
+    	oyster.touch_in
+      expect(subject).to be_in_journey
     end
+
+    it 'should raise an error if you try and travel with less than £1' do
+    	expect{oyster.touch_in}.to raise_error 'Insufficient funds to travel'
+    end
+
   end
 
   describe '#touch_out' do
+
   	it 'changes in_journey? to false' do
+  		oyster.top_up(10)
   		oyster.touch_in
-  		expect{oyster.touch_out}.to change{oyster.in_journey?}.to false
+  		oyster.touch_out
+  		expect(subject).not_to be_in_journey
+ 
   	end
+
+  	it 'deducts a fare from the oystercard' do
+  		oyster.top_up(10)
+  		oyster.touch_in
+  		expect{oyster.touch_out}.to change{oyster.balance}.by(-Oystercard::MIN_FARE)
+  	end
+
+  	
+
   end
+
+
 
 
 end
