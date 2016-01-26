@@ -16,15 +16,18 @@ class Oystercard
     @balance += value
   end
 
-
+  def entry_station (station)
+  	station
+  end
 
   def in_journey?
     @in_journey
   end
 
-  def touch_in
+  def touch_in (station)
   	raise 'Insufficient funds to travel' if @balance < MIN_TRAVEL_BALANCE
     @in_journey = true
+    entry_station(station)
   end
 
  

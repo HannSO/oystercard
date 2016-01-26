@@ -39,12 +39,12 @@ describe Oystercard do
 
     it 'changes in_journey? to true' do
     	oyster.top_up(2)
-    	oyster.touch_in
+    	oyster.touch_in('station')
       expect(subject).to be_in_journey
     end
 
     it 'should raise an error if you try and travel with less than £1' do
-    	expect{oyster.touch_in}.to raise_error 'Insufficient funds to travel'
+    	expect{oyster.touch_in('station')}.to raise_error 'Insufficient funds to travel'
     end
 
   end
@@ -53,7 +53,7 @@ describe Oystercard do
 
   	it 'changes in_journey? to false' do
   		oyster.top_up(10)
-  		oyster.touch_in
+  		oyster.touch_in('station')
   		oyster.touch_out
   		expect(subject).not_to be_in_journey
  
@@ -61,12 +61,20 @@ describe Oystercard do
 
   	it 'deducts a fare from the oystercard' do
   		oyster.top_up(10)
-  		oyster.touch_in
+  		oyster.touch_in('station')
   		expect{oyster.touch_out}.to change{oyster.balance}.by(-Oystercard::MIN_FARE)
   	end
 
-  	
 
+  describe '#entry_station'
+  	let(:station){double "station"}
+  	 
+
+  	 it 'should get station touched_in in, in entry station'do
+  	 	oyster.top_up(10)
+  	 	oyster.touch_in(station)
+  		expect(subject.entry_station(station)).to eq station 
+ 		 end
   end
 
 
