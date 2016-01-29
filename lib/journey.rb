@@ -1,6 +1,6 @@
 class Journey
 
-	attr_reader :entry_exit_stations
+	attr_reader :entry_exit_stations 
 
 	def initialize
 		@entry_exit_stations = {}
@@ -12,17 +12,14 @@ class Journey
 
 	def starts(station)
    	@entry_exit_stations[:entry_station] = station #if in_progress?
-   	station[:zone] = @a
 	end
 
   def ends(station)
    	@entry_exit_stations[:exit_station] = station #if in_progress?
-   	station[:zone] = @b
+  
   end
 
-  def zone_diff
-  	(@a-@b).abs
-  end
+
 
 
 

@@ -21,13 +21,20 @@ class Oystercard
 
   def touch_in(station)
     fail 'Insufficient funds' if @balance < MIN_FARE
-      deduct(PENALTY_FARE) if touched_in?
+      if touched_in? 
+        deduct(PENALTY_FARE)  
+        puts "£#{PENALTY_FARE} deducted for not touching touching out/double touch in"
+        log.end_journey('UNRECORDED')
+      end
 			log.start_journey(station)
       @touched_in = true
   end
 
   def touch_out(station)
-    deduct(PENALTY_FARE) if !touched_in?
+    if !touched_in?
+      puts "#{PENALTY_FARE} deducted for no touch-in"
+      deduct(PENALTY_FARE) 
+    end
     deduct(MIN_FARE)
 		log.end_journey(station)
     @touched_in = false
